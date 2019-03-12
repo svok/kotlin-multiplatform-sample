@@ -43,9 +43,15 @@ tasks {
         archiveBaseName.set(project.name)
     }
 
-
+    // Update local packages from proj-common since they have no version
+    task<YarnTask>("commonUpgrade") {
+        dependsOn("yarn_install")
+        args = listOf("upgrade", "proj-common")
+    }
+    
     task<YarnTask>("ngBuild") {
         dependsOn("yarn_install")
+        dependsOn("commonUpgrade")
 
         inputs.files(fileTree("node_modules"))
         inputs.files(fileTree("src"))
@@ -76,29 +82,7 @@ tasks {
         args = listOf("run", "start")
     }
 
-//tasks.getByName("processResources").dependsOn("ngBuild")
-//    register("build") {
-//        dependsOn("ngBuild")
-//    }
-
-//    register("check") {
-//        dependsOn("ngTest")
-//    }
-
-//    register("test") {
-//        dependsOn("ngTest")
-//    }
-
-//    register("clean") {
-//        delete("node_modules")
-//        delete("bower_components")
-//        delete("coverage")
-//        delete("documentation")
-//        delete("dist")
-//        delete("src/app/generated")
-//    }
-
-    task<DockerVersion>(name = "dockerVersion") {
+    task<DockerVersion>("dockerVersion") {
         group = DockerRemoteApiPlugin.DEFAULT_TASK_GROUP
     }
 
@@ -116,12 +100,6 @@ tasks {
         copyFile("call", "/var/www/site")
         copyFile("nginx.conf", "/etc/nginx/sites-available/default")
 
-//  entryPoint("java")
-//  defaultCommand( "-jar", "/app/${bootJar.archiveName}")
-//  exposePort(8081)
-
-//    runCommand("apk --update --no-cache add curl")
-//    instruction("HEALTHCHECK CMD curl -f http://localhost:8080/health || exit 1")
     }
 
     task<Sync>("syncArchive") {
