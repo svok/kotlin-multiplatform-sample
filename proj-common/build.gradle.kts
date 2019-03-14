@@ -1,14 +1,13 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     kotlin("multiplatform")
     id("maven-publish")
+    id("kotlinx-serialization")
 }
-repositories {
-    mavenCentral()
-}
-//group="com.example"
-//version="0.0.1"
 
 val output_dir = "${rootProject.buildDir}/javascript-compiled"
+val serialization_version: String by project
 
 kotlin {
     jvm() {
@@ -35,6 +34,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serialization_version")
             }
         }
         val commonTest by getting {
@@ -46,6 +46,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-jdk8"))
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serialization_version")
             }
         }
         val jvmTest by getting {
@@ -57,6 +58,14 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-js"))
+                api("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:$serialization_version")
+            }
+            tasks {
+//                "shadowJar"(ShadowJar::class) {
+//                    manifest {
+//                        // attributes("Main-Class" to application.mainClassName)
+//                    }
+//                }
             }
         }
         val jsTest by getting {

@@ -9,6 +9,7 @@ val node_version: String by project
 val yarn_version: String by project
 val node_plugin_version: String by project
 val docker_plugin_version: String by project
+val serialization_version: String by project
 
 plugins {
     id("kotlin-platform-js")
@@ -37,6 +38,12 @@ node {
 }
 
 tasks {
+
+//    "shadowJar"(ShadowJar::class) {
+//        manifest {
+////            attributes("Main-Class" to application.mainClassName)
+//        }
+//    }
 
     withType<Jar> {
         dependsOn("ngBuild")
@@ -119,4 +126,5 @@ tasks {
 
 dependencies {
     compile(project(":proj-common"))
+    compile("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:$serialization_version")
 }
