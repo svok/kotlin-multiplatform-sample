@@ -1,6 +1,6 @@
 buildscript {
     val kotlin_version: String by project
-    val logback_version: String by project
+    val kotlin_frontend_version: String by project
     val node_plugin_version: String by project
     val docker_plugin_version: String by project
 
@@ -13,7 +13,7 @@ buildscript {
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
         classpath("org.jetbrains.kotlin:kotlin-serialization:$kotlin_version")
-        classpath("org.jetbrains.kotlin:kotlin-frontend-plugin:0.0.45")
+        classpath("org.jetbrains.kotlin:kotlin-frontend-plugin:$kotlin_frontend_version")
     }
 }
 

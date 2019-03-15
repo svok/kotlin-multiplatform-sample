@@ -9,7 +9,7 @@ plugins {
 
 val output_dir = "${rootProject.buildDir}/javascript-compiled"
 val serialization_version: String by project
-
+val node_version: String by project
 
 kotlin {
     jvm() {
@@ -19,7 +19,7 @@ kotlin {
     }
     js() {
         kotlinFrontend {
-            downloadNodeJsVersion = "latest"
+            downloadNodeJsVersion = node_version
             bundle("webpack", delegateClosureOf<WebPackExtension> {
 //                bundleName = "projCommon"
                 sourceMapEnabled = true //| false   // enable/disable source maps
