@@ -2,9 +2,9 @@ import com.bmuschko.gradle.docker.DockerRemoteApiPlugin
 import com.bmuschko.gradle.docker.tasks.DockerVersion
 import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 import com.moowork.gradle.node.yarn.YarnTask
+import org.jetbrains.kotlin.gradle.frontend.webpack.WebPackExtension
 
 val kotlin_version: String by project
-
 val node_version: String by project
 val yarn_version: String by project
 val node_plugin_version: String by project
@@ -15,17 +15,26 @@ plugins {
     id("kotlin-platform-js")
     id("com.moowork.node")
     id("com.bmuschko.docker-remote-api")
+    id("org.jetbrains.kotlin.frontend")
 }
 
-repositories {
-    jcenter()
-    mavenCentral()
-}
-
-//val distDir = project.buildDir.resolve("dist")
 val distDir = project.projectDir.resolve("dist")
 val assetsDir = project.projectDir.resolve("assets")
 val srcDir = project.projectDir.resolve("src")
+
+kotlinFrontend {
+    bundle("webpack", delegateClosureOf<WebPackExtension> {
+//        bundleName = "Launcher"
+        sourceMapEnabled = true
+        port = 3000
+//        contentPath = file("../Assets/web")
+        mode = "development"
+        stats = "normal"
+    })
+
+    define("PRODUCTION", false)
+    define("X", false)
+}
 
 node {
     version = node_version
@@ -38,12 +47,6 @@ node {
 }
 
 tasks {
-
-//    "shadowJar"(ShadowJar::class) {
-//        manifest {
-////            attributes("Main-Class" to application.mainClassName)
-//        }
-//    }
 
     withType<Jar> {
         dependsOn("ngBuild")

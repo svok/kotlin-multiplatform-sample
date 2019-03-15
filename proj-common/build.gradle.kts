@@ -1,13 +1,15 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import org.jetbrains.kotlin.gradle.frontend.webpack.WebPackExtension
 
 plugins {
     kotlin("multiplatform")
     id("maven-publish")
     id("kotlinx-serialization")
+    id("org.jetbrains.kotlin.frontend")
 }
 
 val output_dir = "${rootProject.buildDir}/javascript-compiled"
 val serialization_version: String by project
+
 
 kotlin {
     jvm() {
@@ -16,6 +18,31 @@ kotlin {
         }
     }
     js() {
+        kotlinFrontend {
+            downloadNodeJsVersion = "latest"
+            bundle("webpack", delegateClosureOf<WebPackExtension> {
+//                bundleName = "projCommon"
+                sourceMapEnabled = true //| false   // enable/disable source maps
+                contentPath = file("${project.buildDir}/content-path") // a file that represents a directory to be served by dev server)
+                publicPath = "/"  // web prefix
+                host = "localhost" // dev server host
+                port = 8088   // dev server port
+                proxyUrl = "" //| "http://...."  // URL to be proxied, useful to proxy backend webserver
+                stats = "normal"  // log level "errors-only"
+                mode = "development"
+            })
+
+            karma {
+                port = 9876
+                runnerPort = 9100
+                reporters = mutableListOf("progress")
+                frameworks = mutableListOf("qunit") // for now only qunit works as intended
+                preprocessors = mutableListOf()
+            }
+
+            define("PRODUCTION", false)
+            define("X", false)
+        }
         val main by compilations.getting {
             kotlinOptions {
                 metaInfo = true
@@ -29,7 +56,7 @@ kotlin {
     // For Linux, should be changed to e.g. linuxX64
     // For MacOS, should be changed to e.g. macosX64
     // For Windows, should be changed to e.g. mingwX64
-    linuxX64("linux")
+//    linuxX64("linux")
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -73,9 +100,9 @@ kotlin {
                 implementation(kotlin("test-js"))
             }
         }
-        val linuxMain by getting {
-        }
-        val linuxTest by getting {
-        }
+//        val linuxMain by getting {
+//        }
+//        val linuxTest by getting {
+//        }
     }
 }
