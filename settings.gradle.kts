@@ -1,8 +1,17 @@
 pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven {
+            name = "Kotlin EAP (for kotlin-frontend-plugin)"
+            url = uri("https://dl.bintray.com/kotlin/kotlin-eap")
+        }
+    }
     resolutionStrategy {
         eachPlugin {
-            if (requested.id.id == "kotlin-multiplatform") {
-                useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:${requested.version}")
+            when (requested.id.id) {
+                "kotlin-multiplatform" -> useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:${requested.version}")
+                "kotlinx-serialization" -> "org.jetbrains.kotlin:kotlin-serialization:${requested.version}"
+                "org.jetbrains.kotlin.frontend" -> useModule("org.jetbrains.kotlin:kotlin-frontend-plugin:${requested.version}")
             }
         }
     }

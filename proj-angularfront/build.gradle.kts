@@ -4,11 +4,11 @@ import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 import com.moowork.gradle.node.yarn.YarnTask
 
 val kotlin_version: String by project
-
 val node_version: String by project
 val yarn_version: String by project
 val node_plugin_version: String by project
 val docker_plugin_version: String by project
+val serialization_version: String by project
 
 plugins {
     id("kotlin-platform-js")
@@ -16,24 +16,12 @@ plugins {
     id("com.bmuschko.docker-remote-api")
 }
 
-repositories {
-    jcenter()
-    mavenCentral()
-}
-
-//val distDir = project.buildDir.resolve("dist")
 val distDir = project.projectDir.resolve("dist")
 val assetsDir = project.projectDir.resolve("assets")
 val srcDir = project.projectDir.resolve("src")
 
-node {
-    version = node_version
-    yarnVersion = yarn_version
-    download = true
-    download = true
-    workDir = file("${project.buildDir}/nodejs")
-    yarnWorkDir = file("${project.buildDir}/yarn")
-    nodeModulesDir = file("${project.projectDir}")
+dependencies {
+    implementation(project(":proj-common"))
 }
 
 tasks {
@@ -48,7 +36,7 @@ tasks {
         dependsOn("yarn_install")
         args = listOf("upgrade", "proj-common")
     }
-    
+
     task<YarnTask>("ngBuild") {
         dependsOn("yarn_install")
         dependsOn("commonUpgrade")
@@ -115,8 +103,4 @@ tasks {
         into(createDockerfileTask.destFile.asFile.get().parentFile)
     }
 
-}
-
-dependencies {
-    compile(project(":proj-common"))
 }

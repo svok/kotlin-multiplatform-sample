@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {sample} from 'proj-common/proj-common';
+import {sample} from 'proj-common';
 
 @Component({
   selector: 'app-root',
