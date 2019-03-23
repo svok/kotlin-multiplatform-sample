@@ -1,15 +1,16 @@
-import org.jetbrains.kotlin.gradle.frontend.webpack.WebPackExtension
-
 plugins {
     kotlin("multiplatform")
     id("maven-publish")
     id("kotlinx-serialization")
-    id("org.jetbrains.kotlin.frontend")
 }
 
-val output_dir = "${rootProject.buildDir}/javascript-compiled"
 val serialization_version: String by project
 val node_version: String by project
+val npmTarget = "${rootProject.buildDir}/npm"
+val npmJsFile = "${project.name}.js"
+val npmDir = project.name
+val jsOutputFile = "$npmTarget/$npmDir/$npmJsFile"
+
 
 kotlin {
     jvm() {
@@ -18,37 +19,12 @@ kotlin {
         }
     }
     js() {
-        kotlinFrontend {
-            downloadNodeJsVersion = node_version
-            bundle("webpack", delegateClosureOf<WebPackExtension> {
-//                bundleName = "projCommon"
-                sourceMapEnabled = true //| false   // enable/disable source maps
-                contentPath = file("${project.buildDir}/content-path") // a file that represents a directory to be served by dev server)
-                publicPath = "/"  // web prefix
-                host = "localhost" // dev server host
-                port = 8088   // dev server port
-                proxyUrl = "" //| "http://...."  // URL to be proxied, useful to proxy backend webserver
-                stats = "normal"  // log level "errors-only"
-                mode = "development"
-            })
-
-            karma {
-                port = 9876
-                runnerPort = 9100
-                reporters = mutableListOf("progress")
-                frameworks = mutableListOf("qunit") // for now only qunit works as intended
-                preprocessors = mutableListOf()
-            }
-
-            define("PRODUCTION", false)
-            define("X", false)
-        }
         val main by compilations.getting {
             kotlinOptions {
                 metaInfo = true
                 sourceMap = true
-                moduleKind = "commonjs"
-                outputFile = "$output_dir/proj-common.js"
+                moduleKind = "umd"
+                outputFile = jsOutputFile
             }
         }
     }
@@ -85,14 +61,7 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-js"))
-                api("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:$serialization_version")
-            }
-            tasks {
-//                "shadowJar"(ShadowJar::class) {
-//                    manifest {
-//                        // attributes("Main-Class" to application.mainClassName)
-//                    }
-//                }
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:$serialization_version")
             }
         }
         val jsTest by getting {
@@ -106,3 +75,68 @@ kotlin {
 //        }
     }
 }
+
+tasks {
+    task<Sync>("assembleWeb") {
+        val dependencies = configurations.get("jsMainImplementation").map {
+            val file = it
+            val (tDir, tVer) = "^(.*)-([\\d.]+-\\w+|[\\d.]+)\\.jar$"
+                .toRegex()
+                .find(file.name)
+                ?.groupValues
+                ?.drop(1)
+                ?: listOf("", "")
+            var jsFile: File? = null
+            copy {
+                from(zipTree(file.absolutePath), {
+                    includeEmptyDirs = false
+                    include { fileTreeElement ->
+                        val path = fileTreeElement.path
+                        val res = (path.endsWith(".js") || path.endsWith(".map"))
+                                && (path.startsWith("META-INF/resources/") || !path.startsWith("META-INF/"))
+                        if (res && path.endsWith(".js") && ! path.endsWith(".meta.js")) jsFile = fileTreeElement.file
+                        res
+                    }
+                })
+                into("$npmTarget/$tDir")
+            }
+            jsFile?.also { packageJson(tDir, it, tVer) }
+            tDir to jsFile
+        }
+            .filter { it.second != null }
+            .map { it.first to it.second!! }
+            .toMap()
+
+        packageJson(npmDir, File(jsOutputFile), project.version.toString(), dependencies)
+        dependsOn("jsMainClasses")
+    }
+
+    assemble.get().dependsOn("assembleWeb")
+}
+
+fun packageJson(dir: String, jsFile: File, version: String, dependencies: Map<String, File> = emptyMap()) {
+    val deps = dependencies.map {
+        println("js2name: ${it.value.name} -> ${js2Name(it.value)}")
+        """"${js2Name(it.value)}": "file:../${it.key}""""
+    }.joinToString(",\n            ")
+    println("DEPS: ${deps}")
+    val text = """
+        {
+          "name": "${js2Name(jsFile)}",
+          "version": "${version}",
+          "main": "./${jsFile.name}",
+          "dependencies": {
+            ${deps}
+          }
+        }
+    """.trimIndent()
+    File("$npmTarget/$dir/package.json").apply {
+        if (parentFile.exists()) {
+            parentFile.delete()
+        }
+        parentFile.mkdirs()
+        writeText(text)
+    }
+}
+
+fun js2Name(jsFile: File) = jsFile.name.replace("""\.js$""".toRegex(), "")

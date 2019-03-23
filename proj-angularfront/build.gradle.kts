@@ -2,7 +2,6 @@ import com.bmuschko.gradle.docker.DockerRemoteApiPlugin
 import com.bmuschko.gradle.docker.tasks.DockerVersion
 import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 import com.moowork.gradle.node.yarn.YarnTask
-import org.jetbrains.kotlin.gradle.frontend.webpack.WebPackExtension
 
 val kotlin_version: String by project
 val node_version: String by project
@@ -15,35 +14,14 @@ plugins {
     id("kotlin-platform-js")
     id("com.moowork.node")
     id("com.bmuschko.docker-remote-api")
-    id("org.jetbrains.kotlin.frontend")
 }
 
 val distDir = project.projectDir.resolve("dist")
 val assetsDir = project.projectDir.resolve("assets")
 val srcDir = project.projectDir.resolve("src")
 
-kotlinFrontend {
-    bundle("webpack", delegateClosureOf<WebPackExtension> {
-//        bundleName = "Launcher"
-        sourceMapEnabled = true
-        port = 3000
-//        contentPath = file("../Assets/web")
-        mode = "development"
-        stats = "normal"
-    })
-
-    define("PRODUCTION", false)
-    define("X", false)
-}
-
-node {
-    version = node_version
-    yarnVersion = yarn_version
-    download = true
-    download = true
-    workDir = file("${project.buildDir}/nodejs")
-    yarnWorkDir = file("${project.buildDir}/yarn")
-    nodeModulesDir = file("${project.projectDir}")
+dependencies {
+    implementation(project(":proj-common"))
 }
 
 tasks {
@@ -58,7 +36,7 @@ tasks {
         dependsOn("yarn_install")
         args = listOf("upgrade", "proj-common")
     }
-    
+
     task<YarnTask>("ngBuild") {
         dependsOn("yarn_install")
         dependsOn("commonUpgrade")
@@ -125,9 +103,4 @@ tasks {
         into(createDockerfileTask.destFile.asFile.get().parentFile)
     }
 
-}
-
-dependencies {
-    compile(project(":proj-common"))
-    compile("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:$serialization_version")
 }

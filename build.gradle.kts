@@ -1,8 +1,6 @@
 buildscript {
     val kotlin_version: String by project
     val kotlin_frontend_version: String by project
-    val node_plugin_version: String by project
-    val docker_plugin_version: String by project
 
     repositories {
         jcenter()
