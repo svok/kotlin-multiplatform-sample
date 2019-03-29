@@ -12,5 +12,9 @@ export class AppComponent {
   sample = new sample.Sample();
   platform = sample.Platform;
   title = 'angularfront';
+  tester = new sample.Tester();
 
+  constructor() {
+    sample.delayedAsync(this.tester);
+  }
 }
