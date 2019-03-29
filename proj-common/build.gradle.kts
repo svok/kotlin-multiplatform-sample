@@ -6,6 +6,7 @@ plugins {
 
 val serialization_version: String by project
 val node_version: String by project
+val coroutine_version: String by project
 val npmTarget = "${rootProject.buildDir}/npm"
 val npmJsFile = "${project.name}.js"
 val npmDir = project.name
@@ -38,6 +39,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("stdlib-common"))
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serialization_version")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$coroutine_version")
             }
         }
         val commonTest by getting {
@@ -50,6 +52,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("stdlib-jdk8"))
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serialization_version")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version")
             }
         }
         val jvmTest by getting {
@@ -62,6 +65,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("stdlib-js"))
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:$serialization_version")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:$coroutine_version")
             }
         }
         val jsTest by getting {

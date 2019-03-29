@@ -3927,6 +3927,9 @@ klaw@^1.0.0:
 "kotlin@file:../build/npm/kotlin-stdlib-js":
   version "1.3.21"
 
+"kotlinx-coroutines-core@file:../build/npm/kotlinx-coroutines-core-js":
+  version "1.1.1"
+
 "kotlinx-serialization-runtime-js@file:../build/npm/kotlinx-serialization-runtime-js":
   version "0.10.0"
 
@@ -5234,8 +5237,9 @@ progress@^1.1.8:
 "proj-common@file:../build/npm/proj-common":
   version "0.0.1-SNAPSHOT"
   dependencies:
-    kotlin "file:../../../.cache/yarn/v4/npm-proj-common-0.0.1-SNAPSHOT-70f12b43-d352-48a5-8c0d-cef78cdf832a-1553329693935/node_modules/kotlin-stdlib-js"
-    kotlinx-serialization-runtime-js "file:../../../.cache/yarn/v4/npm-proj-common-0.0.1-SNAPSHOT-70f12b43-d352-48a5-8c0d-cef78cdf832a-1553329693935/node_modules/kotlinx-serialization-runtime-js"
+    kotlin "file:../../../.cache/yarn/v4/npm-proj-common-0.0.1-SNAPSHOT-aba4f3c9-413e-4c56-810c-4641f3e4c22e-1553834107194/node_modules/kotlin-stdlib-js"
+    kotlinx-coroutines-core "file:../../../.cache/yarn/v4/npm-proj-common-0.0.1-SNAPSHOT-aba4f3c9-413e-4c56-810c-4641f3e4c22e-1553834107194/node_modules/kotlinx-coroutines-core-js"
+    kotlinx-serialization-runtime-js "file:../../../.cache/yarn/v4/npm-proj-common-0.0.1-SNAPSHOT-aba4f3c9-413e-4c56-810c-4641f3e4c22e-1553834107194/node_modules/kotlinx-serialization-runtime-js"
 
 promise-inflight@^1.0.1:
   version "1.0.1"
