@@ -12,6 +12,7 @@ pluginManagement {
                 "kotlin-multiplatform" -> useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:${requested.version}")
                 "kotlinx-serialization" -> "org.jetbrains.kotlin:kotlin-serialization:${requested.version}"
                 "org.jetbrains.kotlin.frontend" -> useModule("org.jetbrains.kotlin:kotlin-frontend-plugin:${requested.version}")
+//                "com.android.application" -> useModule("com.android.tools.build:gradle:${requested.version}")
             }
         }
     }
@@ -24,6 +25,7 @@ rootProject.buildFileName = "build.gradle.kts"
 include("proj-common")
 include("proj-backend")
 include("proj-angularfront")
+include("proj-androidfront")
 
 fun configureGradleScriptKotlinOn(project: ProjectDescriptor) {
     project.buildFileName = "build.gradle.kts"

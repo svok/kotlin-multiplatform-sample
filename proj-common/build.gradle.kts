@@ -82,40 +82,40 @@ kotlin {
 
 tasks {
     task<Sync>("assembleWeb") {
-        val dependencies = configurations.get("jsMainImplementation").map {
-            val file = it
-            val (tDir, tVer) = "^(.*)-([\\d.]+-\\w+|[\\d.]+)\\.jar$"
-                .toRegex()
-                .find(file.name)
-                ?.groupValues
-                ?.drop(1)
-                ?: listOf("", "")
-            var jsFile: File? = null
-            copy {
-                from(zipTree(file.absolutePath), {
-                    includeEmptyDirs = false
-                    include { fileTreeElement ->
-                        val path = fileTreeElement.path
-                        val res = (path.endsWith(".js") || path.endsWith(".map"))
-                                && (path.startsWith("META-INF/resources/") || !path.startsWith("META-INF/"))
-                        if (res && path.endsWith(".js") && ! path.endsWith(".meta.js")) jsFile = fileTreeElement.file
-                        res
-                    }
-                })
-                into("$npmTarget/$tDir")
-            }
-            jsFile?.also { packageJson(tDir, it, tVer) }
-            tDir to jsFile
-        }
-            .filter { it.second != null }
-            .map { it.first to it.second!! }
-            .toMap()
-
-        packageJson(npmDir, File(jsOutputFile), project.version.toString(), dependencies)
-        dependsOn("jsMainClasses")
+//        val dependencies = configurations.get("jsMainImplementation").map {
+//            val file = it
+//            val (tDir, tVer) = "^(.*)-([\\d.]+-\\w+|[\\d.]+)\\.jar$"
+//                .toRegex()
+//                .find(file.name)
+//                ?.groupValues
+//                ?.drop(1)
+//                ?: listOf("", "")
+//            var jsFile: File? = null
+//            copy {
+//                from(zipTree(file.absolutePath), {
+//                    includeEmptyDirs = false
+//                    include { fileTreeElement ->
+//                        val path = fileTreeElement.path
+//                        val res = (path.endsWith(".js") || path.endsWith(".map"))
+//                                && (path.startsWith("META-INF/resources/") || !path.startsWith("META-INF/"))
+//                        if (res && path.endsWith(".js") && ! path.endsWith(".meta.js")) jsFile = fileTreeElement.file
+//                        res
+//                    }
+//                })
+//                into("$npmTarget/$tDir")
+//            }
+//            jsFile?.also { packageJson(tDir, it, tVer) }
+//            tDir to jsFile
+//        }
+//            .filter { it.second != null }
+//            .map { it.first to it.second!! }
+//            .toMap()
+//
+//        packageJson(npmDir, File(jsOutputFile), project.version.toString(), dependencies)
+//        dependsOn("jsMainClasses")
     }
 
-    assemble.get().dependsOn("assembleWeb")
+//    assemble.get().dependsOn("assembleWeb")
 }
 
 fun packageJson(dir: String, jsFile: File, version: String, dependencies: Map<String, File> = emptyMap()) {
