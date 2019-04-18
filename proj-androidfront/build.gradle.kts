@@ -8,6 +8,7 @@ val kotlin_version: String by project
 
 android {
     compileSdkVersion(28)
+    buildToolsVersion = "28.0.3"
     defaultConfig {
         applicationId = "com.example.androidfront"
         minSdkVersion(24)
@@ -25,12 +26,9 @@ android {
     }
     testBuildType = "debug"
     sourceSets {
-        val main by getting
-        main.java.srcDirs("src/main/kotlin")
-        val androidTest by getting
-        androidTest.java.srcDirs("src/androidTest/kotlin")
-        val test by getting
-        test.java.srcDirs("src/test/kotlin")
+        get("main").java.srcDirs("src/main/kotlin")
+        get("androidTest").java.srcDirs("src/androidTest/kotlin")
+        get("test").java.srcDirs("src/test/kotlin")
     }
     lintOptions {
         warning( "InvalidPackage")
@@ -38,7 +36,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":proj-common"))
+//    implementation(project(":proj-common", configuration = "jvm"))
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(kotlin("stdlib-jdk8", kotlin_version))
     implementation(kotlin("test-junit", kotlin_version))
