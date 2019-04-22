@@ -36,7 +36,7 @@ android {
 }
 
 dependencies {
-//    implementation(project(":proj-common", configuration = "jvm"))
+    implementation(project(":proj-common"))
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(kotlin("stdlib-jdk8", kotlin_version))
     implementation(kotlin("test-junit", kotlin_version))

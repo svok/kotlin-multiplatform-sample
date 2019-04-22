@@ -12,6 +12,8 @@ val npmJsFile = "${project.name}.js"
 val npmDir = project.name
 val jsOutputFile = "$npmTarget/$npmDir/$npmJsFile"
 
+// workaround for https://youtrack.jetbrains.com/issue/KT-27170
+configurations.create("compileClasspath")
 
 kotlin {
     jvm() {
@@ -33,7 +35,7 @@ kotlin {
     // For Linux, should be changed to e.g. linuxX64
     // For MacOS, should be changed to e.g. macosX64
     // For Windows, should be changed to e.g. mingwX64
-//    linuxX64("linux")
+    // linuxX64("linux")
     sourceSets {
         val commonMain by getting {
             dependencies {

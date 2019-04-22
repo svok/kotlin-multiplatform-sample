@@ -7,7 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 
 import kotlinx.android.synthetic.main.activity_main.*
-//import sample.Sample
+import sample.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,11 +15,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-//        val sample = Sample()
+        val sample = Sample()
+        val platform = Platform
 
         fab.setOnClickListener { view ->
-//            Snackbar.make(view, "Replace with your own action: ${sample.checkMe()}", Snackbar.LENGTH_LONG)
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+            Snackbar.make(view, "Replace with your own action: ${sample.checkMe()} - ${platform.name}", Snackbar.LENGTH_LONG)
+//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
     }
