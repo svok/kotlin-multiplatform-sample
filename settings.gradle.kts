@@ -24,8 +24,9 @@ rootProject.buildFileName = "build.gradle.kts"
 
 include("proj-common")
 include("proj-backend")
-include("proj-angularfront")
+//include("proj-angularfront")
 include("proj-androidfront")
+include("proj-reactfront")
 
 fun configureGradleScriptKotlinOn(project: ProjectDescriptor) {
     project.buildFileName = "build.gradle.kts"
