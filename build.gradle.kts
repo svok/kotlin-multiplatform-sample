@@ -27,7 +27,7 @@ plugins {
     val kotlin_version: String by project
     val node_plugin_version: String by project
     val docker_plugin_version: String by project
-    val android_plugin_version: String by project
+    val kotlin_frontend_version: String by project
 
     kotlin("multiplatform") version kotlin_version apply false
     id("maven-publish")
@@ -35,7 +35,7 @@ plugins {
     id("com.bmuschko.docker-remote-api") version docker_plugin_version apply false
 //    id("com.android.application") version android_plugin_version apply false
 //    id("kotlin-android") version kotlin_version apply false
-
+    id("org.jetbrains.kotlin.frontend") version kotlin_frontend_version apply false
 
 }
 
