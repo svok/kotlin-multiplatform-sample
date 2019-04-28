@@ -38,6 +38,29 @@ tasks {
             main = "call"
         }
     }
+
+    val copyFiles = register("copyFiles", Sync::class) {
+        copy {
+            preserve {
+                include("**")
+            }
+            from(sourceSets.main.get().allSource)
+            exclude("**/*.kt")
+            into("$buildDir/js")
+        }
+
+        copy {
+            preserve {
+                include("**")
+            }
+            from("src/main/web") {
+                exclude("index.html")
+            }
+            into("$buildDir/bundle")
+        }
+    }
+
+    processResources.get().dependsOn(copyFiles)
 }
 
 kotlinFrontend {
@@ -47,11 +70,25 @@ kotlinFrontend {
         dependency("react-dom")
         dependency("react-router-dom")
         dependency("react-app-polyfill")
+        dependency("require-context")
+
+        dependency("react-dev-utils", "^9.0.0")
+//        dependency("file-loader")
+//        dependency("css-loader")
+//        dependency("url-loader")
+//        dependency("postcss-loader")
+//        dependency("html-webpack-plugin")
+//        dependency("case-sensitive-paths-webpack-plugin")
+
         devDependency("karma")
+//        dependency("webpack-manifest-plugin")
+//        devDependency("chunk-manifest-webpack-plugin")
+//        devDependency("webpack-chunk-hash")
+//        devDependency("html-webpack-plugin")
 //        devDependency("babel-loader")
 //        devDependency("@babel/core")
 //        devDependency("@babel/preset-env")
-//        devDependency("react-scripts-kotlin")
+        devDependency("react-scripts-kotlin")
     }
     webpackBundle {
         bundleName = "main"
@@ -63,6 +100,7 @@ kotlinFrontend {
         port = 8088   // dev server port
         stats = "verbose" // "errors-only", "minimal", "none", "normal", "verbose"
     }
+    define("PRODUCTION", false)
 }
 
 dependencies {
@@ -88,4 +126,3 @@ fun kotlinFrontend(block: KotlinFrontendExtension.() -> Unit) {
 fun KotlinFrontendExtension.webpackBundle(block: WebPackExtension.() -> Unit) {
     bundle<WebPackExtension>("webpack") { this as WebPackExtension; block() }
 }
-//fun KotlinFrontendExtension.npm(block: NpmExtension.() -> Unit) = configure<NpmExtension>(block)
