@@ -46,7 +46,7 @@ tasks {
             }
             from(sourceSets.main.get().allSource)
             exclude("**/*.kt")
-            into("$buildDir/js")
+            into("$buildDir/src")
         }
 
         copy {
@@ -56,7 +56,7 @@ tasks {
             from("src/main/web") {
                 exclude("index.html")
             }
-            into("$buildDir/bundle")
+            into("$buildDir/src")
         }
     }
 
@@ -73,12 +73,14 @@ kotlinFrontend {
         dependency("require-context")
 
         dependency("react-dev-utils", "^9.0.0")
+        devDependency("extract-text-webpack-plugin", "next")
 //        dependency("file-loader")
-//        dependency("css-loader")
-//        dependency("url-loader")
+        dependency("sass-loader")
+        dependency("node-sass")
+        dependency("webpack", "4.29.6")
+        dependency("webpack-dev-server", "3.2.1")
 //        dependency("postcss-loader")
 //        dependency("html-webpack-plugin")
-//        dependency("case-sensitive-paths-webpack-plugin")
 
         devDependency("karma")
 //        dependency("webpack-manifest-plugin")
@@ -89,6 +91,7 @@ kotlinFrontend {
 //        devDependency("@babel/core")
 //        devDependency("@babel/preset-env")
         devDependency("react-scripts-kotlin")
+        devDependency("react-scripts", "latest")
     }
     webpackBundle {
         bundleName = "main"

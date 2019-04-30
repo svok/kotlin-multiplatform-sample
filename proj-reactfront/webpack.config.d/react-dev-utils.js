@@ -37,66 +37,66 @@ config.plugins.unshift(
     }),
 );
 
-// const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
+const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 
 // In your webpack config:
 config.module.rules.push(
-    // {
-    //     test: /\.module\.css$/,
-    //     use: [
-    //         require.resolve('style-loader'),
-    //         {
-    //             loader: require.resolve('css-loader'),
-    //             options: {
-    //                 importLoaders: 1,
-    //                 modules: true,
-    //                 getLocalIdent: getCSSModuleLocalIdent,
-    //             },
-    //         },
-    //         {
-    //             loader: require.resolve('postcss-loader'),
-    //             options: {
-    //                 ident: 'postcss', // https://webpack.js.org/guides/migrating/#complex-options
-    //                 plugins: () => [
-    //                     require('postcss-flexbugs-fixes'),
-    //                     autoprefixer({
-    //                         browsers: [
-    //                             '>1%',
-    //                             'last 4 versions',
-    //                             'Firefox ESR',
-    //                             'not ie < 9', // React doesn't support IE8 anyway
-    //                         ],
-    //                         flexbox: 'no-2009',
-    //                     }),
-    //                 ],
-    //             },
-    //         },
-    //     ],
-    // },
+    {
+        test: /\.module\.css$/,
+        use: [
+            require.resolve('style-loader'),
+            {
+                loader: require.resolve('css-loader'),
+                options: {
+                    importLoaders: 1,
+                    modules: true,
+                    getLocalIdent: getCSSModuleLocalIdent,
+                },
+            },
+            {
+                loader: require.resolve('postcss-loader'),
+                options: {
+                    ident: 'postcss', // https://webpack.js.org/guides/migrating/#complex-options
+                    plugins: () => [
+                        require('postcss-flexbugs-fixes'),
+                        autoprefixer({
+                            browsers: [
+                                '>1%',
+                                'last 4 versions',
+                                'Firefox ESR',
+                                'not ie < 9', // React doesn't support IE8 anyway
+                            ],
+                            flexbox: 'no-2009',
+                        }),
+                    ],
+                },
+            },
+        ],
+    },
       // ** ADDING/UPDATING LOADERS **
       // The "file" loader handles all assets unless explicitly excluded.
       // The `exclude` list *must* be updated with every change to loader extensions.
       // When adding a new loader, you must add its `test`
       // as a new entry in the `exclude` list in the "file" loader.
-
+      //
       // "file" loader makes sure those assets end up in the `build` folder.
       // When you `import` an asset, you get its filename.
-      // {
-      //   exclude: [
-      //     /\.html$/,
-      //     /\.(js|jsx)$/,
-      //     /\.css$/,
-      //     /\.json$/,
-      //     /\.bmp$/,
-      //     /\.gif$/,
-      //     /\.jpe?g$/,
-      //     /\.png$/,
-      //   ],
-      //   loader: require.resolve('file-loader'),
-      //   options: {
-      //     name: 'static/media/[name].[hash:8].[ext]',
-      //   },
-      // },
+      {
+        exclude: [
+          /\.html$/,
+          /\.(js|jsx)$/,
+          /\.css$/,
+          /\.json$/,
+          /\.bmp$/,
+          /\.gif$/,
+          /\.jpe?g$/,
+          /\.png$/,
+        ],
+        loader: require.resolve('file-loader'),
+        options: {
+          name: 'static/media/[name].[hash:8].[ext]',
+        },
+      },
 );
 
 // config.resolve.alias = {
