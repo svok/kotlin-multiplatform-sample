@@ -76,22 +76,12 @@ kotlinFrontend {
 
         devDependency("react-dev-utils", "^9.0.0")
         devDependency("extract-text-webpack-plugin", "next")
-//        dependency("file-loader")
         dependency("sass-loader")
         dependency("node-sass")
         devDependency("webpack", "4.29.6")
         devDependency("webpack-dev-server", "3.2.1")
-//        dependency("postcss-loader")
-//        dependency("html-webpack-plugin")
 
         devDependency("karma")
-//        dependency("webpack-manifest-plugin")
-//        devDependency("chunk-manifest-webpack-plugin")
-//        devDependency("webpack-chunk-hash")
-//        devDependency("html-webpack-plugin")
-//        devDependency("babel-loader")
-//        devDependency("@babel/core")
-//        devDependency("@babel/preset-env")
         devDependency("react-scripts-kotlin")
         devDependency("react-scripts", "latest")
     }
@@ -116,7 +106,7 @@ dependencies {
     implementation("org.jetbrains:kotlin-redux:4.0.0-pre.70-kotlin-1.3.21")
     implementation("org.jetbrains:kotlin-react-dom:16.6.0-pre.70-kotlin-1.3.21")
     implementation("org.jetbrains:kotlin-css-js:1.0.0-pre.70-kotlin-1.3.21")
-//    implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.70-kotlin-1.3.21")
+    implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.70-kotlin-1.3.21")
     implementation("org.jetbrains:kotlin-styled:1.0.0-pre.70-kotlin-1.3.21")
     implementation("org.jetbrains:kotlin-react-router-dom:4.3.1-pre.70-kotlin-1.3.21")
 

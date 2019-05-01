@@ -4,6 +4,7 @@ import react.*
 import react.dom.*
 import ru.proj.reactfront.logo.*
 import ru.proj.reactfront.ticker.*
+import sample.*
 
 class App : RComponent<RProps, RState>() {
     override fun RBuilder.render() {
@@ -12,6 +13,10 @@ class App : RComponent<RProps, RState>() {
             h2 {
                 +"Welcome to React with Kotlin"
             }
+        }
+        h3 {
+            val sample = Sample()
+            +"Platform: ${Platform.name} with number ${sample.checkMe()}"
         }
         p("App-intro") {
             +"To get started, edit "
