@@ -2,11 +2,13 @@ package ru.proj.reactfront.app
 
 import react.*
 import react.dom.*
+import ru.proj.reactfront.logo.*
+import ru.proj.reactfront.ticker.*
 
 class App : RComponent<RProps, RState>() {
     override fun RBuilder.render() {
         div("App-header") {
-//            logo()
+            logo()
             h2 {
                 +"Welcome to React with Kotlin"
             }
@@ -17,7 +19,7 @@ class App : RComponent<RProps, RState>() {
             +" and save to reload."
         }
         p("App-ticker") {
-//            ticker()
+            ticker()
         }
     }
 }

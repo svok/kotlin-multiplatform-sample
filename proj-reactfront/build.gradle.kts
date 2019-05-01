@@ -21,7 +21,8 @@ tasks {
     compileKotlin2Js {
         kotlinOptions {
             metaInfo = true
-            outputFile = "${project.buildDir.path}/js/${project.name}.js"
+//            outputFile = "${project.buildDir.path}/js/${project.name}.js"
+            outputFile = "${project.buildDir.path}/src/index.js"
             sourceMap = true
             sourceMapEmbedSources = "always"
             moduleKind = "commonjs"
@@ -60,7 +61,8 @@ tasks {
         }
     }
 
-    processResources.get().dependsOn(copyFiles)
+    assemble.get().dependsOn(copyFiles)
+//    processResources.get().dependsOn(copyFiles)
 }
 
 kotlinFrontend {
@@ -72,13 +74,13 @@ kotlinFrontend {
         dependency("react-app-polyfill")
         dependency("require-context")
 
-        dependency("react-dev-utils", "^9.0.0")
+        devDependency("react-dev-utils", "^9.0.0")
         devDependency("extract-text-webpack-plugin", "next")
 //        dependency("file-loader")
         dependency("sass-loader")
         dependency("node-sass")
-        dependency("webpack", "4.29.6")
-        dependency("webpack-dev-server", "3.2.1")
+        devDependency("webpack", "4.29.6")
+        devDependency("webpack-dev-server", "3.2.1")
 //        dependency("postcss-loader")
 //        dependency("html-webpack-plugin")
 
