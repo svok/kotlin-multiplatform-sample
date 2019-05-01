@@ -3,9 +3,9 @@ package ru.proj.reactfront.logo
 import react.*
 import react.dom.*
 
-@JsModule("ru/proj/reactfront/logo/react.svg")
+@JsModule("./ru/proj/reactfront/logo/react.svg")
 external val reactLogo: dynamic
-@JsModule("ru/proj/reactfront/logo/kotlin.svg")
+@JsModule("./ru/proj/reactfront/logo/kotlin.svg")
 external val kotlinLogo: dynamic
 
 fun RBuilder.logo(height: Int = 100) {

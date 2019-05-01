@@ -21,8 +21,7 @@ tasks {
     compileKotlin2Js {
         kotlinOptions {
             metaInfo = true
-//            outputFile = "${project.buildDir.path}/js/${project.name}.js"
-            outputFile = "${project.buildDir.path}/src/index.js"
+            outputFile = "${project.buildDir.path}/js/index.js"
             sourceMap = true
             sourceMapEmbedSources = "always"
             moduleKind = "commonjs"
@@ -54,6 +53,7 @@ tasks {
             preserve {
                 include("**")
             }
+            from("$buildDir/js")
             from("src/main/web") {
                 exclude("index.html")
             }
@@ -61,8 +61,7 @@ tasks {
         }
     }
 
-    assemble.get().dependsOn(copyFiles)
-//    processResources.get().dependsOn(copyFiles)
+    compileKotlin2Js.get().dependsOn(copyFiles)
 }
 
 kotlinFrontend {
