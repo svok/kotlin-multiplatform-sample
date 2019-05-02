@@ -16,6 +16,10 @@ import java.time.*
 import io.ktor.websocket.*
 import io.ktor.http.cio.websocket.*
 import io.ktor.auth.*
+import sample.*
+
+val checkMe = Sample().checkMe()
+val platform = Platform.name
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -70,7 +74,7 @@ fun Application.module(testing: Boolean = false) {
 
     routing {
         get("/") {
-            call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
+            call.respondText("HELLO WORLD! Platform $platform with Number $checkMe", contentType = ContentType.Text.Plain)
         }
 
         get("/html-freemarker") {

@@ -26,7 +26,7 @@ kotlin {
             kotlinOptions {
                 metaInfo = true
                 sourceMap = true
-                moduleKind = "umd"
+                moduleKind = "commonjs"
                 outputFile = jsOutputFile
             }
         }
@@ -83,7 +83,14 @@ kotlin {
 }
 
 tasks {
-    task<Sync>("assembleWeb") {
+    register("some") {
+        configurations.forEach {
+            println("CONFIGS: ${it.name}")
+        }
+    }
+    build.get().dependsOn("some")
+
+//    task<Sync>("assembleWeb") {
 //        val dependencies = configurations.get("jsMainImplementation").map {
 //            val file = it
 //            val (tDir, tVer) = "^(.*)-([\\d.]+-\\w+|[\\d.]+)\\.jar$"
@@ -115,34 +122,34 @@ tasks {
 //
 //        packageJson(npmDir, File(jsOutputFile), project.version.toString(), dependencies)
 //        dependsOn("jsMainClasses")
-    }
+//    }
 
 //    assemble.get().dependsOn("assembleWeb")
 }
 
-fun packageJson(dir: String, jsFile: File, version: String, dependencies: Map<String, File> = emptyMap()) {
-    val deps = dependencies.map {
-        println("js2name: ${it.value.name} -> ${js2Name(it.value)}")
-        """"${js2Name(it.value)}": "file:../${it.key}""""
-    }.joinToString(",\n            ")
-    println("DEPS: ${deps}")
-    val text = """
-        {
-          "name": "${js2Name(jsFile)}",
-          "version": "${version}",
-          "main": "./${jsFile.name}",
-          "dependencies": {
-            ${deps}
-          }
-        }
-    """.trimIndent()
-    File("$npmTarget/$dir/package.json").apply {
-        if (parentFile.exists()) {
-            parentFile.delete()
-        }
-        parentFile.mkdirs()
-        writeText(text)
-    }
-}
-
-fun js2Name(jsFile: File) = jsFile.name.replace("""\.js$""".toRegex(), "")
+//fun packageJson(dir: String, jsFile: File, version: String, dependencies: Map<String, File> = emptyMap()) {
+//    val deps = dependencies.map {
+//        println("js2name: ${it.value.name} -> ${js2Name(it.value)}")
+//        """"${js2Name(it.value)}": "file:../${it.key}""""
+//    }.joinToString(",\n            ")
+//    println("DEPS: ${deps}")
+//    val text = """
+//        {
+//          "name": "${js2Name(jsFile)}",
+//          "version": "${version}",
+//          "main": "./${jsFile.name}",
+//          "dependencies": {
+//            ${deps}
+//          }
+//        }
+//    """.trimIndent()
+//    File("$npmTarget/$dir/package.json").apply {
+//        if (parentFile.exists()) {
+//            parentFile.delete()
+//        }
+//        parentFile.mkdirs()
+//        writeText(text)
+//    }
+//}
+//
+//fun js2Name(jsFile: File) = jsFile.name.replace("""\.js$""".toRegex(), "")
