@@ -71,8 +71,9 @@ tasks {
         file("$projectDir/node_modules").deleteRecursively()
     }
 
-    val jar2npm = register("jar2npm", Copy::class) {
+    val jar2npm = register("jar2npm") {
 
+        dependsOn("yarn_install")
         val conf = configurations.testRuntimeClasspath.get()
 
         val nmReal = project.projectDir.resolve("node_modules").mkDirOrFail()
@@ -82,15 +83,15 @@ tasks {
             .resolvedConfiguration
             .resolvedArtifacts
 
-        val deps = allJars
+        val names = allJars
             .filter { it.file.isFile && it.file.exists() }
             .distinctBy { it.file.canonicalFile.absolutePath }
-            .forEach {
+            .map {
                 val version = it.moduleVersion.id.version
                 val file = it.file
 
                 val metaName =
-                    zipTree(file).find { fName -> fName.name.endsWith(".meta.js") }?.name ?: return@forEach
+                    zipTree(file).find { fName -> fName.name.endsWith(".meta.js") }?.name ?: return@map ""
                 val name = metaName.replace("\\.meta\\.js\$".toRegex(), "")
                 val js = "$name.js"
 
@@ -109,15 +110,21 @@ tasks {
                 outDir.resolve("package.json").bufferedWriter().use { out ->
                     out.appendln(JsonBuilder(packageJson).toPrettyString())
                 }
-                println("Ensure symlink ${name} -> ${outDir.absoluteFile}")
-                nmReal.resolve(name).ensureSymlink(outDir)
+                name
             }
+            .filter { it.isNotBlank() }
+
+
+        doLast {
+            names.forEach { name ->
+                    val outDir = nmImported.resolve(name).mkDirOrFail()
+//                    println("Ensure symlink ${name} -> ${outDir.absoluteFile}")
+                    nmReal.resolve(name).ensureSymlink(outDir)
+                }
+        }
     }
 
     val copyFiles = register("copyFiles", Copy::class) {
-        //            preserve {
-//                include("**")
-//            }
         from("$buildDir/js")
         from(sourceSets.main.get().allSource)
         exclude("**/*.kt")
