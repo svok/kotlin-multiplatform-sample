@@ -26,8 +26,8 @@ Gradle 5.4 Kotlin DSL is used as a build system. For the JS platform frameworks 
 [Moorwork Node Gradle plugin](https://plugins.gradle.org/plugin/com.moowork.node).
 
 Other promising plugin is [Jetbrains Kotlin Frontend Plugin](https://github.com/Kotlin/kotlin-frontend-plugin).
-But it looks abandoned: there are no updates for couple monthes, several merge requests waiting for acception,
-plenty unclosed issues and annoying bugs.
+But it looks abandoned: there are no updates for couple monthes, several merge requests are waiting for acception for 
+monthes, there are plenty unclosed issues and annoying bugs.
 
 The experiments in this project motivate me to plan another gradle plugin for kotlin-based 
 JS frameworks.
