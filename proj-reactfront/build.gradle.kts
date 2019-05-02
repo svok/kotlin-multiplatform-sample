@@ -1,10 +1,13 @@
-import org.jetbrains.kotlin.gradle.frontend.KotlinFrontendExtension
-import org.jetbrains.kotlin.gradle.frontend.webpack.WebPackExtension
+import com.moowork.gradle.node.yarn.YarnTask
+import groovy.json.JsonBuilder
+import java.io.IOException
+import java.nio.file.Files
 
 plugins {
     id("kotlin-platform-js")
+    id("com.moowork.node")
 //    id("kotlinx-serialization")
-    id("org.jetbrains.kotlin.frontend")
+//    id("org.jetbrains.kotlin.frontend")
 }
 
 repositories {
@@ -17,7 +20,110 @@ repositories {
 
 }
 
+node {
+    download = true
+    workDir = file("${project.buildDir}/node")
+    npmWorkDir = file("${project.buildDir}/node")
+    yarnWorkDir = file("${project.buildDir}/node")
+    nodeModulesDir = file("${project.projectDir}")
+}
+
 tasks {
+
+    withType<Jar> {
+        dependsOn("ngBuild")
+        archiveBaseName.set(project.name)
+    }
+
+    val ngBuild = task<YarnTask>("ngBuild") {
+        dependsOn("yarn_install")
+
+        inputs.files(fileTree("node_modules"))
+        inputs.files(fileTree("src"))
+        inputs.file("package.json")
+
+        outputs.dir("dist")
+
+        args = listOf("run", "build")
+    }
+
+//    val webdriverUpdate = register("webdriverUpdate", YarnTask::class) {
+//        args = listOf("run", "update-driver")
+//    }
+
+    task<YarnTask>("ngTest") {
+        dependsOn("yarn_install")
+        dependsOn("webdriverUpdate")
+        args = listOf("run", "testPhantom")
+    }
+
+    task<YarnTask>("updateDeps") {
+        args = listOf("run", "update")
+    }
+
+    task<YarnTask>("serve") {
+        args = listOf("run", "start")
+    }
+
+    clean.get().doLast {
+        println("Delete dist and node_modules")
+        file("$projectDir/dist").deleteRecursively()
+        file("$projectDir/node_modules").deleteRecursively()
+    }
+
+    val jar2npm = register("jar2npm", Copy::class) {
+
+        val conf = configurations.testRuntimeClasspath.get()
+
+        val nmReal = project.projectDir.resolve("node_modules").mkDirOrFail()
+        val nmImported = project.buildDir.resolve("node_modules_imported").mkDirOrFail()
+
+        val allJars = conf
+            .resolvedConfiguration
+            .resolvedArtifacts
+
+        val deps = allJars
+            .filter { it.file.isFile && it.file.exists() }
+            .distinctBy { it.file.canonicalFile.absolutePath }
+            .forEach {
+                val version = it.moduleVersion.id.version
+                val file = it.file
+
+                val metaName =
+                    zipTree(file).find { fName -> fName.name.endsWith(".meta.js") }?.name ?: return@forEach
+                val name = metaName.replace("\\.meta\\.js\$".toRegex(), "")
+                val js = "$name.js"
+
+                val outDir = nmImported.resolve(name).mkDirOrFail()
+                copy {
+                    from(zipTree(file))
+                    into(outDir)
+                }
+                val packageJson = mapOf(
+                    "name" to name,
+                    "version" to version,
+                    "main" to js,
+                    "_source" to "gradle"
+                )
+
+                outDir.resolve("package.json").bufferedWriter().use { out ->
+                    out.appendln(JsonBuilder(packageJson).toPrettyString())
+                }
+                println("Ensure symlink ${name} -> ${outDir.absoluteFile}")
+                nmReal.resolve(name).ensureSymlink(outDir)
+            }
+    }
+
+    val copyFiles = register("copyFiles", Copy::class) {
+        //            preserve {
+//                include("**")
+//            }
+        from("$buildDir/js")
+        from(sourceSets.main.get().allSource)
+        exclude("**/*.kt")
+        into("$buildDir/src")
+    }
+
     compileKotlin2Js {
         kotlinOptions {
             metaInfo = true
@@ -39,62 +145,8 @@ tasks {
         }
     }
 
-    val copyFiles = register("copyFiles", Sync::class) {
-        copy {
-            preserve {
-                include("**")
-            }
-            from(sourceSets.main.get().allSource)
-            exclude("**/*.kt")
-            into("$buildDir/src")
-        }
-
-        copy {
-            preserve {
-                include("**")
-            }
-            from("$buildDir/js")
-            from("src/main/web") {
-                exclude("index.html")
-            }
-            into("$buildDir/src")
-        }
-    }
-
-    compileKotlin2Js.get().dependsOn(copyFiles)
-}
-
-kotlinFrontend {
-    npm {
-        dependency("style-loader") // production dependency
-        dependency("react")
-        dependency("react-dom")
-        dependency("react-router-dom")
-        dependency("react-app-polyfill")
-        dependency("require-context")
-
-        devDependency("react-dev-utils", "^9.0.0")
-        devDependency("extract-text-webpack-plugin", "next")
-        dependency("sass-loader")
-        dependency("node-sass")
-        devDependency("webpack", "4.29.6")
-        devDependency("webpack-dev-server", "3.2.1")
-
-        devDependency("karma")
-        devDependency("react-scripts-kotlin")
-        devDependency("react-scripts", "latest")
-    }
-    webpackBundle {
-        bundleName = "main"
-        sourceMapEnabled = false   // enable/disable source maps
-        mode = "development"
-        contentPath = file("src/main/web")
-        publicPath = "/"  // web prefix
-        host = "localhost" // dev server host
-        port = 8088   // dev server port
-        stats = "verbose" // "errors-only", "minimal", "none", "normal", "verbose"
-    }
-    define("PRODUCTION", false)
+    processResources.get().dependsOn(copyFiles)
+    ngBuild.dependsOn(jar2npm)
 }
 
 dependencies {
@@ -113,10 +165,14 @@ dependencies {
     testImplementation("org.jetbrains:kotlin-mocha:3.0.1-pre.70-kotlin-1.3.21")
 }
 
-fun kotlinFrontend(block: KotlinFrontendExtension.() -> Unit) {
-    val kotlinFrontend: KotlinFrontendExtension by project
-    kotlinFrontend.apply(block)
+fun File.mkDirOrFail(): File {
+    if (!mkdirs() && !exists()) {
+        throw IOException("Failed to create directories at $this")
+    }
+    return this
 }
-fun KotlinFrontendExtension.webpackBundle(block: WebPackExtension.() -> Unit) {
-    bundle<WebPackExtension>("webpack") { this as WebPackExtension; block() }
+
+fun File.ensureSymlink(file: File) {
+    if (this.exists() && Files.isSymbolicLink(toPath())) return
+    Files.createSymbolicLink(toPath(), file.toPath())
 }

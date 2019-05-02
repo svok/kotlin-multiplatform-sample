@@ -82,7 +82,14 @@ kotlin {
     }
 }
 
-//tasks {
+tasks {
+    register("some") {
+        configurations.forEach {
+            println("CONFIGS: ${it.name}")
+        }
+    }
+    build.get().dependsOn("some")
+
 //    task<Sync>("assembleWeb") {
 //        val dependencies = configurations.get("jsMainImplementation").map {
 //            val file = it
@@ -118,7 +125,7 @@ kotlin {
 //    }
 
 //    assemble.get().dependsOn("assembleWeb")
-//}
+}
 
 //fun packageJson(dir: String, jsFile: File, version: String, dependencies: Map<String, File> = emptyMap()) {
 //    val deps = dependencies.map {
