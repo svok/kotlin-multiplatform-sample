@@ -24,7 +24,6 @@
     "@angular/router": "~7.2.0",
     "core-js": "^2.5.4",
     "ngx-build-plus": "^7.7.6",
-    "proj-common": "file:../build/npm/proj-common",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
     "zone.js": "~0.8.26"

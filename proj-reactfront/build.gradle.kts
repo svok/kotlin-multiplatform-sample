@@ -9,7 +9,6 @@ plugins {
 repositories {
     mavenCentral()
     maven { setUrl("http://dl.bintray.com/kotlin/kotlinx.html") }
-//    maven { setUrl("http://dl.bintray.com/kotlin/kotlin-eap") }
     maven { setUrl("http://dl.bintray.com/kotlin/kotlin-js-wrappers") }
     maven { setUrl("https://kotlin.bintray.com/kotlin-js-wrappers") }
     maven { setUrl("http://dl.bintray.com/kotlin/kotlinx") }
@@ -45,12 +44,7 @@ tasks {
 
     task<YarnTask>("ngTest") {
         dependsOn("yarn_install")
-        dependsOn("webdriverUpdate")
         args = listOf("run", "testPhantom")
-    }
-
-    task<YarnTask>("updateDeps") {
-        args = listOf("run", "update")
     }
 
     task<YarnTask>("serve") {
