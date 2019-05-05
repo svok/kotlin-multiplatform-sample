@@ -29,8 +29,10 @@ Other promising plugin is [Jetbrains Kotlin Frontend Plugin](https://github.com/
 But it looks abandoned: there are no updates for couple monthes, several merge requests are waiting for acception for 
 monthes, there are plenty unclosed issues and annoying bugs.
 
-The experiments in this project motivate me to plan another gradle plugin for kotlin-based 
-JS frameworks.
+The experiments in this project motivate us to publish another gradle plugin for kotlin-based 
+JS frameworks: [kotlin-jar2npm-plugin](https://github.com/svok/kotlin-jar2npm-plugin).
+This plugin extracts the content of the KotlinJS JAR-packages to node_modules package repository
+and allows KotlinJS code available in all other JavaScript projects.
 
 ## Installation
 

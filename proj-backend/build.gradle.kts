@@ -35,9 +35,9 @@ dependencies {
     implementation(project(":proj-common"))
     
     testImplementation("io.ktor:ktor-server-tests:$ktor_version")
-    testImplementation("org.assertj:assertj-core:3.9.1")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.3.1")
+    testImplementation("org.assertj:assertj-core:3.12.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.4.2")
 }
 
 kotlin.sourceSets["main"].kotlin.srcDirs("src")

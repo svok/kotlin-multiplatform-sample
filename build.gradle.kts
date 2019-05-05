@@ -10,6 +10,7 @@ buildscript {
         maven { setUrl("https://dl.bintray.com/kotlin/kotlin-eap") }
         maven { setUrl("https://kotlin.bintray.com/kotlinx") }
         maven { setUrl("https://dl.bintray.com/jetbrains/kotlin-native-dependencies") }
+        maven { setUrl("https://dl.bintray.com/svok/jar2npm") }
     }
 
     dependencies {
@@ -19,7 +20,6 @@ buildscript {
         classpath("com.android.tools.build:gradle:$android_plugin_version")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
         classpath("org.jetbrains.kotlin:kotlin-serialization:$kotlin_version")
-//        classpath("com.github.jengelman.gradle.plugins:shadow:$shadow_version")
     }
 }
 
@@ -33,10 +33,7 @@ plugins {
     id("maven-publish")
     id("com.moowork.node") version node_plugin_version
     id("com.bmuschko.docker-remote-api") version docker_plugin_version apply false
-//    id("com.android.application") version android_plugin_version apply false
-//    id("kotlin-android") version kotlin_version apply false
-    id("org.jetbrains.kotlin.frontend") version kotlin_frontend_version apply false
-
+    id("com.crowdproj.plugins.jar2npm") version "0.1.14" apply false
 }
 
 repositories {

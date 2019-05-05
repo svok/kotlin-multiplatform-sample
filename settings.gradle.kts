@@ -1,10 +1,7 @@
 pluginManagement {
     repositories {
         gradlePluginPortal()
-        maven {
-            name = "Kotlin EAP (for kotlin-frontend-plugin)"
-            url = uri("https://dl.bintray.com/kotlin/kotlin-eap")
-        }
+        maven { setUrl("https://dl.bintray.com/svok/jar2npm") }
     }
     resolutionStrategy {
         eachPlugin {
@@ -12,7 +9,7 @@ pluginManagement {
                 "kotlin-multiplatform" -> useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:${requested.version}")
                 "kotlinx-serialization" -> "org.jetbrains.kotlin:kotlin-serialization:${requested.version}"
                 "org.jetbrains.kotlin.frontend" -> useModule("org.jetbrains.kotlin:kotlin-frontend-plugin:${requested.version}")
-//                "com.android.application" -> useModule("com.android.tools.build:gradle:${requested.version}")
+                "com.crowdproj.plugins.jar2npm" -> useModule("com.crowdproj.plugins:jar2npm-plugin:${requested.version}")
             }
         }
     }

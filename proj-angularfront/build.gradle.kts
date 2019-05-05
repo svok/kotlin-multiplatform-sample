@@ -28,7 +28,7 @@ tasks {
 
     withType<Jar> {
         dependsOn("ngBuild")
-//        archiveBaseName.set(project.name)
+        archiveBaseName.set(project.name)
     }
 
     // Update local packages from proj-common since they have no version
