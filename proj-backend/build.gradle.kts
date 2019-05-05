@@ -18,6 +18,8 @@ repositories {
 }
 
 dependencies {
+    implementation(project(":proj-common"))
+
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
     implementation("io.ktor:ktor-server-netty:$ktor_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
@@ -32,16 +34,14 @@ dependencies {
     implementation("io.ktor:ktor-auth:$ktor_version")
     implementation("io.ktor:ktor-auth-jwt:$ktor_version")
     
-    implementation(project(":proj-common"))
-    
     testImplementation("io.ktor:ktor-server-tests:$ktor_version")
     testImplementation("org.assertj:assertj-core:3.12.2")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.4.2")
 }
 
-kotlin.sourceSets["main"].kotlin.srcDirs("src")
-kotlin.sourceSets["test"].kotlin.srcDirs("test")
+//kotlin.sourceSets["main"].kotlin.srcDirs("src")
+//kotlin.sourceSets["test"].kotlin.srcDirs("test")
 
-sourceSets["main"].resources.srcDirs("resources")
-sourceSets["test"].resources.srcDirs("testresources")
+//sourceSets["main"].resources.srcDirs("resources")
+//sourceSets["test"].resources.srcDirs("testresources")
