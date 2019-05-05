@@ -1,7 +1,7 @@
 # Sample multiplatform and multi-frontend Kotlin project
 
 This progect is aimed to test the usage of the Kotlin multiplatform capabilities to build a
-reusable code for as for differenct frontends as for backedn.
+reusable code for as for differenct frontends as for backend.
 
 The reusable code is deposed in proj-common submodule. It has a description for JVM (jvmMain) and
 JS (jsMain) archtectures, while the logics which is common for all architectures are placed in commonMain.
