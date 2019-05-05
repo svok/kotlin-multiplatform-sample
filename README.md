@@ -1,7 +1,7 @@
 # Sample multiplatform and multi-frontend Kotlin project
 
 This progect is aimed to test the usage of the Kotlin multiplatform capabilities to build a
-reusable code for as for differenct frontends as for backedn.
+reusable code for as for differenct frontends as for backend.
 
 The reusable code is deposed in proj-common submodule. It has a description for JVM (jvmMain) and
 JS (jsMain) archtectures, while the logics which is common for all architectures are placed in commonMain.
@@ -23,7 +23,7 @@ As a frontend we have tested the following frameworks:
 ## Build system
 
 Gradle 5.4 Kotlin DSL is used as a build system. For the JS platform frameworks we have used
-[Moorwork Node Gradle plugin](https://plugins.gradle.org/plugin/com.moowork.node).
+[Moowork Node Gradle plugin](https://plugins.gradle.org/plugin/com.moowork.node).
 
 Other promising plugin is [Jetbrains Kotlin Frontend Plugin](https://github.com/Kotlin/kotlin-frontend-plugin).
 But it looks abandoned: there are no updates for couple monthes, several merge requests are waiting for acception for 
