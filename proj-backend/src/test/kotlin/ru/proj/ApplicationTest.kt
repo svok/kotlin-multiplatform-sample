@@ -11,7 +11,7 @@ class ApplicationTest {
 
     @Test
     fun testRoot() {
-        withTestApplication({ module(testing = true) }) {
+        withTestApplication({ module() }) {
             handleRequest(HttpMethod.Get, "/").apply {
                 assertThat(response.status()).isEqualTo(HttpStatusCode.OK)
                 assertThat(response.content).contains("HELLO WORLD!")
