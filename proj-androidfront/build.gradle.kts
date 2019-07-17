@@ -7,6 +7,10 @@ plugins {
 val kotlin_version: String by project
 
 android {
+    packagingOptions {
+        exclude("META-INF/kotlinx-coroutines-core.kotlin_module")
+        exclude("META-INF/kotlinx-serialization-runtime.kotlin_module")
+    }
     compileSdkVersion(28)
     buildToolsVersion = "28.0.3"
     defaultConfig {
