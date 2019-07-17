@@ -4,9 +4,9 @@
   "private": true,
   "dependencies": {
     "react": "^16.8.6",
+    "react-app-rewired": "*",
     "react-dom": "^16.8.6",
-    "react-scripts": "3.0.0",
-    "react-app-rewired": "*"
+    "react-scripts": "3.0.1"
   },
   "scripts": {
     "start": "react-app-rewired start",
