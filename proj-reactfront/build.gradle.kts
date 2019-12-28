@@ -42,6 +42,11 @@ tasks {
         args = listOf("run", "build")
     }
 
+    val ngUpgrade by creating(YarnTask::class) {
+        dependsOn(yarnSetup)
+        args = listOf("upgrade")
+    }
+
     task<YarnTask>("ngTest") {
         dependsOn("yarn_install")
         args = listOf("run", "testPhantom")
