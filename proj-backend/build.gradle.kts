@@ -40,6 +40,21 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.4.2")
 }
 
+tasks {
+    compileKotlin {
+        java {
+            sourceCompatibility = org.gradle.api.JavaVersion.VERSION_1_8
+            targetCompatibility = org.gradle.api.JavaVersion.VERSION_1_8
+        }
+    }
+    compileTestKotlin {
+        java {
+            sourceCompatibility = org.gradle.api.JavaVersion.VERSION_1_8
+            targetCompatibility = org.gradle.api.JavaVersion.VERSION_1_8
+        }
+    }
+}
+
 //kotlin.sourceSets["main"].kotlin.srcDirs("src")
 //kotlin.sourceSets["test"].kotlin.srcDirs("test")
 

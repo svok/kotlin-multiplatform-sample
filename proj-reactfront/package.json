@@ -7,9 +7,12 @@
     "mixin-deep": "^2.0.1",
     "react": "^16.9.0",
     "react-app-rewired": "*",
-    "react-dom": "^16.8.6",
-    "react-scripts": "3.0.1",
+    "react-dom": "^16.9.0",
+    "react-scripts": "3.3.0",
     "set-value": "^3.0.1"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-react-jsx": "^7.7.7"
   },
   "scripts": {
     "start": "react-app-rewired start",

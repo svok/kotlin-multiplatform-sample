@@ -18,7 +18,12 @@ configurations.create("compileClasspath")
 kotlin {
     jvm() {
         val main by compilations.getting {
-
+            kotlinOptions {
+                java {
+                    sourceCompatibility = org.gradle.api.JavaVersion.VERSION_1_8
+                    targetCompatibility = org.gradle.api.JavaVersion.VERSION_1_8
+                }
+            }
         }
     }
     js() {

@@ -1,6 +1,3 @@
-//import com.bmuschko.gradle.docker.DockerRemoteApiPlugin
-//import com.bmuschko.gradle.docker.tasks.DockerVersion
-//import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 import com.moowork.gradle.node.yarn.YarnTask
 
 plugins {
@@ -36,6 +33,11 @@ tasks {
         outputs.dir("dist")
 
         args = listOf("run", "build")
+    }
+
+    task<YarnTask>("ngUpgrade") {
+        dependsOn("yarn_install")
+        args = listOf("upgrade")
     }
 
     val webdriverUpdate = register("webdriverUpdate", YarnTask::class) {

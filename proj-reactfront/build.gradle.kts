@@ -42,7 +42,7 @@ tasks {
         args = listOf("run", "build")
     }
 
-    val ngUpgrade by creating(YarnTask::class) {
+    task<YarnTask>("ngUpgrade") {
         dependsOn(yarnSetup)
         args = listOf("upgrade")
     }
@@ -100,15 +100,15 @@ dependencies {
     implementation(project(":proj-common"))
     implementation(kotlin("stdlib-js"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:$serialization_version")
-    implementation("org.jetbrains:kotlin-react:16.6.0-pre.78-kotlin-1.3.41")
-    implementation("org.jetbrains:kotlin-react-redux:5.0.7-pre.78-kotlin-1.3.41")
-    implementation("org.jetbrains:kotlin-redux:4.0.0-pre.78-kotlin-1.3.41")
-    implementation("org.jetbrains:kotlin-react-dom:16.6.0-pre.78-kotlin-1.3.41")
+    implementation("org.jetbrains:kotlin-react:16.9.0-pre.89-kotlin-1.3.60")
+    implementation("org.jetbrains:kotlin-react-redux:5.0.7-pre.89-kotlin-1.3.60")
+    implementation("org.jetbrains:kotlin-redux:4.0.0-pre.89-kotlin-1.3.60")
+    implementation("org.jetbrains:kotlin-react-dom:16.9.0-pre.89-kotlin-1.3.60")
     implementation("org.jetbrains:kotlin-css-js:1.0.0-pre.78-kotlin-1.3.21")
-    implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.78-kotlin-1.3.41")
-    implementation("org.jetbrains:kotlin-styled:1.0.0-pre.78-kotlin-1.3.41")
-    implementation("org.jetbrains:kotlin-react-router-dom:4.3.1-pre.78-kotlin-1.3.41")
+    implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.89-kotlin-1.3.60")
+    implementation("org.jetbrains:kotlin-styled:1.0.0-pre.89-kotlin-1.3.60")
+    implementation("org.jetbrains:kotlin-react-router-dom:4.3.1-pre.89-kotlin-1.3.60")
 
     testImplementation(kotlin("test-js"))
-    testImplementation("org.jetbrains:kotlin-mocha:3.0.1-pre.78-kotlin-1.3.41")
+    testImplementation("org.jetbrains:kotlin-mocha:3.0.1-pre.89-kotlin-1.3.60")
 }
